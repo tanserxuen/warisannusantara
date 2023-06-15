@@ -1,0 +1,16 @@
+{
+  "name": "express-mongodb",
+  "version": "1.0.0",
+  "description": "This creates the API endpoint for warisan nusantara app to connect to mongodb database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joan",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.0"
+  }
+}
