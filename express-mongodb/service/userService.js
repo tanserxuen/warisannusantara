@@ -8,7 +8,19 @@ function register(name, email, password) {
 async function authenticateUser(email, password) {
   const user = await User.findOne({ email: email });
   console.log(password, user.password);
-  return password == user.password;
+  return { user, authenticated: user.password === password };
 }
 
-module.exports = { register, authenticateUser };
+async function editProfile(id, name, email, password) {
+  console.log(id, name, email, password);
+  return await User.findOneAndUpdate(
+    { email: email },
+    { name: name, password: password }
+  );
+}
+
+// async function getUserById(id) {
+//   console.log({id});
+// }
+
+module.exports = { register, authenticateUser, editProfile };
