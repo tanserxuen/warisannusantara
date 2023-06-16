@@ -20,6 +20,7 @@
         id="name"
         placeholder="name"
         class="font-control"
+        required
       />
       <label for="email">Email</label>
       <input
@@ -28,6 +29,7 @@
         id="email"
         placeholder="email"
         class="font-control"
+        required
       />
       <label for="password">Password</label>
       <input
@@ -35,6 +37,8 @@
         name="password"
         id="password"
         placeholder="Password"
+        required
+        minlength="8"
       />
       <input type="submit" value="Register" />
     </form>
