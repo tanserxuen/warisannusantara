@@ -1,14 +1,24 @@
 const { User } = require("../schema/userSchema");
 
-function register(name, email, password) {
-  const user = new User({ email, password, name });
-  return user.save();
+async function register(name, email, password) {
+  try {
+    const existing = await User.findOne({ email: email });
+    if (existing == null)
+      return await new User({ name, email, password }).save();
+    else throw "Duplicate Email";
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function authenticateUser(email, password) {
-  const user = await User.findOne({ email: email });
-  console.log(password, user.password);
-  return { user, authenticated: user.password === password };
+  try {
+    const user = await User.findOne({ email: email });
+    if (user.password === password) return { user, authenticated: true };
+    else throw "Invalid Credentials";
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function editProfile(id, name, email, password) {

@@ -31,6 +31,9 @@
         required
       />
       <input type="submit" value="Login" />
+      <% if(err) { %>
+      <p style="color: red"><%= err %></p>
+      <% } %>
     </form>
     <a href="/register">Register</a>
   </body>
