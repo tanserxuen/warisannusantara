@@ -131,7 +131,8 @@ router.post("/warisan/", upload.single('picture'), async (req, res) => {
         var name = requestData[i].nama;
         var description = requestData[i].desc;
         var date = requestData[i].date;
-        var picture = req.file.path;
+        // var picture = req.file.path;
+        var picture = requestData[i].gambar;
   
         await addWarisanNusantara(category, name, description, date, picture);
       }
@@ -140,7 +141,8 @@ router.post("/warisan/", upload.single('picture'), async (req, res) => {
       var name = requestData.nama;
       var description = requestData.desc;
       var date = requestData.date;
-      var picture = req.file.path;
+      var picture = requestData.gambar;
+      // var picture = req.file.path;
   
       await addWarisanNusantara(category, name, description, date, picture);
     }
