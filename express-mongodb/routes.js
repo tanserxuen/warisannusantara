@@ -1,6 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
+const multer = require("multer");
 
 const {
   authenticateUser,
@@ -108,22 +109,19 @@ router.get("/warisan/:id", async (req, res) => {
   }  
 });
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
 // add new warisanNusantara
-router.post("/warisan/", async (req, res) => {
-  // try{
-  //   var category = req.body.kategory;
-  //   var name = req.body.nama;
-  //   var description = req.body.desc;
-  //   var date = req.body.date;
-  //   var picture = req.body.gambar;
-  
-  //   await addWarisanNusantara(category, name, description, date, picture).then((result) => {
-  //     res.json({ message: "Post Method here with the id: " + result._id });
-  //   });
-  // }catch(error){
-  //   console.error("Error adding warisan nusantara: ", error);
-  //   res.status(500).json({error: "Internal Server Error"});
-  // }
+router.post("/warisan/", upload.single('picture'), async (req, res) => {
   try {
     var requestData = req.body; // Assuming an array of objects in the request body
 
@@ -133,7 +131,7 @@ router.post("/warisan/", async (req, res) => {
         var name = requestData[i].nama;
         var description = requestData[i].desc;
         var date = requestData[i].date;
-        var picture = requestData[i].gambar;
+        var picture = req.file.path;
   
         await addWarisanNusantara(category, name, description, date, picture);
       }
@@ -142,7 +140,7 @@ router.post("/warisan/", async (req, res) => {
       var name = requestData.nama;
       var description = requestData.desc;
       var date = requestData.date;
-      var picture = requestData.gambar;
+      var picture = req.file.path;
   
       await addWarisanNusantara(category, name, description, date, picture);
     }

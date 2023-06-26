@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="content">
+        <table border="1px">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+                
+            </tr>
+        </table>
+    </div>
+    <div class="insertButton">
+        
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+    crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+
+        // alert("Hello");
+        $.ajax({
+            url: "http://localhost:3000/warisan",
+            type: "GET",
+            dataType: "json",
+            success: function(result){
+                console.log(result);
+                var tableRow = "";
+                $.each(result.semuaCollection, function(key, value){
+                    tableRow += '<tr>';
+                    tableRow += '<td>'+value.name+'</td>';
+                    tableRow += '<td>'+value.description+'</td>';
+                    tableRow += '<td><a href="/delete/'+value._id+'">Delete</a> | ';
+                    tableRow += '<a href="/views/update-items.html'+value._id+'">Update</a></td>';
+                    tableRow += '</tr>';
+                });
+                $('table').append(tableRow);
+            }
+        })     
+    });
+</script>
+</html>

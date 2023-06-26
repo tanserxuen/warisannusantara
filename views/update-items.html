@@ -96,4 +96,27 @@
     </form>
   </div>
 </body>
+<script>
+  $(document).ready(function(){
+    $.ajax({
+      url: "http://localhost:3000/warisan",
+      type: "PUT",
+      dataType: "json",
+      success: function(result){
+        console.log(result);
+        var tableRow = "";
+        $.each(result.semuaCollection, function(key, value){
+          tableRow += '<tr>';
+          tableRow += '<td>'+value.name+'</td>';
+          tableRow += '<td>'+value.description+'</td>';
+          tableRow += '<td><a href="/delete/'+value._id+'">Delete</a> | ';
+          tableRow += '<a href="/update/'+value._id+'">Update</a></td>';
+          tableRow += '</tr>';
+        });
+        $('table').append(tableRow);
+      }
+    })     
+  });
+
+</script>
 </html>

@@ -9,6 +9,7 @@
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
     crossorigin="anonymous"
   />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
       background-color: #f8f9fa;
@@ -71,7 +72,7 @@
 <body>
   <div class="upload-page">
     <h2>Create Items</h2>
-    <form action="/items/upload" method="post" enctype="multipart/form-data">
+    <form id="create-form" method="post" >
       <label for="category">Category:</label>
       <select name="category" id="category">
         <option value="weapons">Weapons and Arms</option>
@@ -96,4 +97,54 @@
     </form>
   </div>
 </body>
+
+<script>
+  $(document).ready(function(){
+    
+      document.getElementById('create-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const category = document.getElementById('category');
+        const name = document.getElementById('name');
+        const description = document.getElementById('description');
+        const date = document.getElementById('date');
+        const picture = document.getElementById('picture');
+
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const formData = new FormData();
+          formData.append('category', category.value);
+          formData.append('name', name.value);
+          formData.append('description', description.value);
+          formData.append('date', date.value);
+          formData.append('picture', picture.files[0]);
+
+          console.log(category.value);
+          console.log(name.value);
+          console.log(description.value);
+          console.log(date.value);
+          console.log(picture.files[0]);
+
+          $.ajax({
+            url: "http://localhost:3000/warisan/",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+              console.log(data);
+              if (data.status == 'success') {
+                alert(data.status);
+              }
+            },
+            error: function (error) {
+              console.log(error);
+            }
+          });
+        });
+      });
+  });
+</script>
 </html>
