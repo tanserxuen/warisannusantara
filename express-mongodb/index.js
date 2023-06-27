@@ -8,6 +8,7 @@ const routes = require('./routes.js');
 const app = express();
 
 const bodyParser = require("body-parser");
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -39,5 +40,5 @@ app.use(express.static("public"));
 
 app.use('/', routes);
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 5500;
 app.listen(port, () => console.log("Server is running"));
