@@ -103,7 +103,7 @@
         event.preventDefault();
 
         axios
-          .put("/profile/update", {
+          .put("https://warisan-01-37e0781fd6d2.herokuapp.com/profile/update", {
             name: document.getElementById("name").value,
             email: document.getElementById("email").value,
             password: document.getElementById("password").value,
@@ -111,7 +111,7 @@
           .then(function (response) {
             if (response.data.status == "Success") {
               alert(response.data.message);
-              window.location.href = "/dashboard";
+              window.location.href = "/views/index.html";
             } else {
               alert(response.data.err);
             }
