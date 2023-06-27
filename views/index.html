@@ -23,7 +23,7 @@
       padding: 30px;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
+      max-width: 500px;
       width: 100%;
       text-align: center;
     }
@@ -39,7 +39,7 @@
       font-size: 16px;
     }
 
-    .edit-button {
+    .edit-button, .view-button, .upload-button {
       background-color: #007bff;
       color: #fff;
       border: none;
@@ -51,7 +51,7 @@
       font-size: 16px;
     }
 
-    .edit-button:hover {
+    .edit-button:hover, .view-button:hover, .upload-button:hover {
       background-color: #0056b3;
     }
   </style>
@@ -62,6 +62,8 @@
     <h2>Welcome</h2>
     <p>Edit your profile here.</p>
     <a class="edit-button" href="/profile/edit">Edit Profile</a>
+    <a class="view-button" href="/warisanview">View Items</a>
+    <a class="upload-button" href="/create-items">Upload Item</a>
   </div>
 </body>
 </html>

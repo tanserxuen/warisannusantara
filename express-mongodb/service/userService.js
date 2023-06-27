@@ -29,8 +29,4 @@ async function editProfile(id, name, email, password) {
   );
 }
 
-// async function getUserById(id) {
-//   console.log({id});
-// }
-
 module.exports = { register, authenticateUser, editProfile };

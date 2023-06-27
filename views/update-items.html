@@ -66,28 +66,28 @@
       background-color: #0056b3;
     }
   </style>
-  <title>Upload Items</title>
+  <title>Update Items</title>
 </head>
 <body>
   <div class="upload-page">
     <h2>Update Items</h2>
-    <form action="/items/upload" method="post" enctype="multipart/form-data">
+    <form action="/warisan/update/<%= item._id %>" method="post">
       <label for="category">Category:</label>
       <select name="category" id="category">
-        <option value="weapons">Weapons and Arms</option>
-        <option value="household">Household Items</option>
-        <option value="textiles">Textiles</option>
-        <option value="carving">Carving and Woodworks</option>
+        <option value="weapons" <%= item.category === 'weapons' ? 'selected' : '' %>>Weapons and Arms</option>
+        <option value="household" <%= item.category === 'household' ? 'selected' : '' %>>Household Items</option>
+        <option value="textiles" <%= item.category === 'textiles' ? 'selected' : '' %>>Textiles</option>
+        <option value="carving" <%= item.category === 'carving' ? 'selected' : '' %>>Carving and Woodworks</option>
       </select>
 
       <label for="name">Name:</label>
-      <input type="text" name="name" id="name" required>
+      <input type="text" name="name" id="name" value="<%= item.name %>" required>
 
       <label for="description">Description:</label>
-      <textarea name="description" id="description" required></textarea>
+      <textarea name="description" id="description" required><%= item.description %></textarea>
 
       <label for="date">Date:</label>
-      <input type="date" name="date" id="date" required>
+      <input type="date" name="date" id="date" value="<%= item.date %>" required>
 
       <label for="picture">Picture:</label>
       <input type="file" name="picture" id="picture" required accept="image/*">
@@ -96,27 +96,4 @@
     </form>
   </div>
 </body>
-<script>
-  $(document).ready(function(){
-    $.ajax({
-      url: "http://localhost:3000/warisan",
-      type: "PUT",
-      dataType: "json",
-      success: function(result){
-        console.log(result);
-        var tableRow = "";
-        $.each(result.semuaCollection, function(key, value){
-          tableRow += '<tr>';
-          tableRow += '<td>'+value.name+'</td>';
-          tableRow += '<td>'+value.description+'</td>';
-          tableRow += '<td><a href="/delete/'+value._id+'">Delete</a> | ';
-          tableRow += '<a href="/update/'+value._id+'">Update</a></td>';
-          tableRow += '</tr>';
-        });
-        $('table').append(tableRow);
-      }
-    })     
-  });
-
-</script>
 </html>

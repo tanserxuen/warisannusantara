@@ -81,7 +81,7 @@ router.post("/profile/update", async (req, res) => {
 -----------------------------------*/
 
 //  get all warisanNusantara 
-router.get("/warisan/", async (req, res) => {
+router.get("/warisan", async (req, res) => {
   try{
     await getAllWarisanNusantara().then((result) => { 
       res.json({ 
@@ -95,13 +95,16 @@ router.get("/warisan/", async (req, res) => {
 
 });
 
+router.get("/warisanview", async (req, res) => {
+  res.render("warisan.html");
+});
+
 // search specific warisanNsantara
 router.get("/warisan/:id", async (req, res) => {
   try{
     await getWarisanNusantaraById(req.params.id).then((result) => {
-      res.json({ 
-        "collection": result
-      })
+      // res.json(result);
+      res.render("update-items.html",{item:result})
     });
   }catch(error){
     console.error("Error retrieving warisan nusantara: ", error);
@@ -121,52 +124,31 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // add new warisanNusantara
-router.post("/warisan/", upload.single('picture'), async (req, res) => {
-  try {
-    var requestData = req.body; // Assuming an array of objects in the request body
-
-    if(requestData.length > 1){
-      for (let i = 0; i < requestData.length; i++) {
-        var category = requestData[i].kategory;
-        var name = requestData[i].nama;
-        var description = requestData[i].desc;
-        var date = requestData[i].date;
-        // var picture = req.file.path;
-        var picture = requestData[i].gambar;
-  
-        await addWarisanNusantara(category, name, description, date, picture);
-      }
-    }else{
-      var category = requestData.kategory;
-      var name = requestData.nama;
-      var description = requestData.desc;
-      var date = requestData.date;
-      var picture = requestData.gambar;
-      // var picture = req.file.path;
-  
-      await addWarisanNusantara(category, name, description, date, picture);
-    }
-    res.json({ message: "Post Method here for multiple requests or single request", status: "success"});
-  } catch (error) {
-    console.error("Error adding warisan nusantara: ", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+router.post("/warisan", upload.single('picture'), async (req, res) => {
+  await addWarisanNusantara(req.body.category, req.body.name, req.body.description, req.body.date, req.body.picture)
+  .then((result) => {
+    res.render("index.html", { err: null });
+  })
+  .catch((err) => {
+    console.error("Error adding warisan nusantara: ", err);
+    res.status(500).json({ err: "Internal Server Error" });
+  });
 });
 
 // edit warisanNusantara
-router.put("/warisan/:id", async (req, res) => {
+router.post("/warisan/update/:id", async (req, res) => {
   // return res.json({ message: "Update Method here" });
   try{
     var id = req.params.id;
 
-    var category = req.body.kategory;
-    var name = req.body.nama;
-    var description = req.body.desc;
+    var category = req.body.category;
+    var name = req.body.name;
+    var description = req.body.description;
     var date = req.body.date;
-    var picture = req.body.gambar;
+    var picture = req.body.picture;
   
     await editWarisanNusantara(id, category, name, description, date, picture).then((result) => {
-      res.json({ message: "Post Method here with the id: " + result._id });
+      res.render("warisan.html");
     });
   }catch(error){
     console.error("Error editing warisan nusantara: ", error);
@@ -175,11 +157,11 @@ router.put("/warisan/:id", async (req, res) => {
 });
 
 // delete warisanNusantara
-router.delete("/warisan/:id", async (req, res) => {
+router.get("/warisan/delete/:id", async (req, res) => {
   try{
     var id = req.params.id;
     await deleteWarisanNusantara(id).then((result) => {
-      res.json({ message: "Delete Method here with the id: " + result._id });
+      res.render("warisan.html");
     });
   }catch(error){
     console.error("Error deleting warisan nusantara: ", error);
@@ -187,6 +169,9 @@ router.delete("/warisan/:id", async (req, res) => {
   }
 });
 
+router.get("/create-items", (req, res) => {
+  res.render("create-items.html", { err: null });
+});
 
 router.get("/*", (req, res) => {
   res.render("login.html", { err: null });
