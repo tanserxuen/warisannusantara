@@ -9,6 +9,7 @@
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
     crossorigin="anonymous"
   />
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <style>
     body {
       background-color: #f8f9fa;
@@ -72,7 +73,7 @@
   <title>Register</title>
 </head>
 <body>
-  <form class="register-form" method="post" action="/register">
+  <form class="register-form" onsubmit=""register(event)>
     <h2 style="text-align: center; margin-bottom: 30px;">Register</h2>
     <div class="mb-3">
       <label for="name" class="form-label">Name</label>
@@ -95,5 +96,25 @@
       <input type="submit" value="Register" class="btn btn-primary back-btn">
     </div>
   </form>
+
+  <script>
+    function register(event){
+      event.preventDefault();
+      axios.post('/register', {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      }).then(function (response) {
+        if(response.data.status == 'Success'){
+          alert(response.data.message);
+          window.location.href = '/login';
+        } else {
+          alert(response.data.err);
+        }
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  </script>
 </body>
 </html>

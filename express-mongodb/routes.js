@@ -1,5 +1,4 @@
-
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 
@@ -16,7 +15,6 @@ const {
   deleteWarisanNusantara,
 } = require("./service/warisanService");
 
-
 /*----------------------------------
 /*
 /*
@@ -32,10 +30,10 @@ router.post("/login", async (req, res) => {
     .then((result) => {
       loggedInUser = result.user;
       console.log({ loggedInUser });
-      res.render("index.html");
+      res.json({ message: "Login Successful", status: "Success" });
     })
     .catch((err) => {
-      res.render("login.html", { err });
+      res.json({ err: "Invalid Credentials" });
     });
 });
 
@@ -46,10 +44,10 @@ router.get("/register", async (req, res) => {
 router.post("/register", async (req, res) => {
   await register(req.body.name, req.body.email, req.body.password)
     .then((result) => {
-      res.render("login.html", { err: null });
+      res.json({ message: "Register Successful", status: "Success" });
     })
     .catch((err) => {
-      res.render("register.html", { err });
+      res.json({ err: "Server Error" });
     });
 });
 
@@ -57,7 +55,7 @@ router.get("/profile/edit", (req, res) => {
   res.render("edit-profile.html", { user: loggedInUser });
 });
 
-router.post("/profile/update", async (req, res) => {
+router.put("/profile/update", async (req, res) => {
   await editProfile(
     loggedInUser._id,
     req.body.name,
@@ -67,10 +65,10 @@ router.post("/profile/update", async (req, res) => {
     .then((result) => {
       if (result) {
         loggedInUser = result;
-        res.render("index.html");
-      } else res.send("Server Error");
+        res.json({ message: "Update Successful", status: "Success" });
+      } else res.json({ err: "Server Error" });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.json({ err: "Server Error" }));
 });
 
 /*----------------------------------
@@ -80,19 +78,18 @@ router.post("/profile/update", async (req, res) => {
 /*
 -----------------------------------*/
 
-//  get all warisanNusantara 
+//  get all warisanNusantara
 router.get("/warisan", async (req, res) => {
-  try{
-    await getAllWarisanNusantara().then((result) => { 
-      res.json({ 
-        "semuaCollection": result
-      })
+  try {
+    await getAllWarisanNusantara().then((result) => {
+      res.json({
+        semuaCollection: result,
+      });
     });
-  }catch(error){
+  } catch (error) {
     console.error("Error retrieving warisan nusantara: ", error);
-    res.status(500).json({error: "Internal Server Error"});
+    res.status(500).json({ error: "Internal Server Error" });
   }
-
 });
 
 router.get("/warisanview", async (req, res) => {
@@ -101,44 +98,50 @@ router.get("/warisanview", async (req, res) => {
 
 // search specific warisanNsantara
 router.get("/warisan/:id", async (req, res) => {
-  try{
+  try {
     await getWarisanNusantaraById(req.params.id).then((result) => {
       // res.json(result);
-      res.render("update-items.html",{item:result})
+      res.render("update-items.html", { item: result });
     });
-  }catch(error){
+  } catch (error) {
     console.error("Error retrieving warisan nusantara: ", error);
-    res.status(500).json({error: "Internal Server Error"});
-  }  
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public');
+    cb(null, "./public");
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
-  }
+  },
 });
 
 const upload = multer({ storage: storage });
 
 // add new warisanNusantara
-router.post("/warisan", upload.single('picture'), async (req, res) => {
-  await addWarisanNusantara(req.body.category, req.body.name, req.body.description, req.body.date, req.body.picture)
-  .then((result) => {
-    res.render("index.html", { err: null });
-  })
-  .catch((err) => {
-    console.error("Error adding warisan nusantara: ", err);
-    res.status(500).json({ err: "Internal Server Error" });
-  });
+router.post("/warisan", upload.single("picture"), async (req, res) => {
+  await addWarisanNusantara(
+    req.body.category,
+    req.body.name,
+    req.body.description,
+    req.body.date,
+    req.body.picture
+  )
+    .then((result) => {
+      res.render("index.html", { err: null, user: loggedInUser });
+    })
+    .catch((err) => {
+      console.error("Error adding warisan nusantara: ", err);
+      res.status(500).json({ err: "Internal Server Error" });
+    });
 });
 
 // edit warisanNusantara
 router.post("/warisan/update/:id", async (req, res) => {
   // return res.json({ message: "Update Method here" });
-  try{
+  try {
     var id = req.params.id;
 
     var category = req.body.category;
@@ -146,31 +149,42 @@ router.post("/warisan/update/:id", async (req, res) => {
     var description = req.body.description;
     var date = req.body.date;
     var picture = req.body.picture;
-  
-    await editWarisanNusantara(id, category, name, description, date, picture).then((result) => {
+
+    await editWarisanNusantara(
+      id,
+      category,
+      name,
+      description,
+      date,
+      picture
+    ).then((result) => {
       res.render("warisan.html");
     });
-  }catch(error){
+  } catch (error) {
     console.error("Error editing warisan nusantara: ", error);
-    res.status(500).json({error: "Internal Server Error"});
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 // delete warisanNusantara
 router.get("/warisan/delete/:id", async (req, res) => {
-  try{
+  try {
     var id = req.params.id;
     await deleteWarisanNusantara(id).then((result) => {
       res.render("warisan.html");
     });
-  }catch(error){
+  } catch (error) {
     console.error("Error deleting warisan nusantara: ", error);
-    res.status(500).json({error: "Internal Server Error"});
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 router.get("/create-items", (req, res) => {
   res.render("create-items.html", { err: null });
+});
+
+router.get("/dashboard", (req, res) => {
+  res.render("index.html", { err: null, user: loggedInUser });
 });
 
 router.get("/*", (req, res) => {

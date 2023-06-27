@@ -9,6 +9,7 @@
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
     crossorigin="anonymous"
   />
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <style>
     body {
       background-color: #f8f9fa;
@@ -71,7 +72,7 @@
   <title>Login</title>
 </head>
 <body>
-  <form class="login-form" method="post" action="/login">
+  <form class="login-form" onsubmit="login(event)">
     <h2 style="text-align: center; margin-bottom: 30px;">Login</h2>
     <label for="email">Email</label>
     <input type="text" name="email" id="email" placeholder="Email" required>
@@ -84,5 +85,25 @@
     <input type="submit" value="Login">
     <a class="register-link" href="/register">Create an account</a>
   </form>
+
+  <script>
+    function login(event){
+      event.preventDefault();
+      
+      axios.post('/login', {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      }).then(function (response) {
+        if(response.data.status == "Success"){
+          alert('Login successful');
+          window.location.href = '/dashboard';
+        }else{
+          alert(response.data.err);
+        }
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  </script>
 </body>
 </html>
