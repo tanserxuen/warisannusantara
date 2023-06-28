@@ -213,7 +213,6 @@ router.get("/warisan/category/:category", async (req, res) => {
 
 // edit warisanNusantara
 router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => {
-  console.log("abc");
   
   const picture = req.file;
 
