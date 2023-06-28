@@ -99,6 +99,14 @@
     </form>
 
     <script>
+      var uId = null;
+      document.onreadystatechange = async function () {
+        if (document.readyState == "complete") {
+          uId = getURLParameter();
+          await getUserDetails();
+        }
+      };
+
       function editProfile(event) {
         event.preventDefault();
 
@@ -120,6 +128,32 @@
             console.log(error);
           });
       }
-   </script>
+
+      async function getUserDetails() {
+        console.log(getURLParameter());
+        await axios
+          .get("http://localhost:3000/user/" + getURLParameter())
+          .then((response) => {
+            const item = response.data;
+            document.getElementById("name").value = item.name;
+            document.getElementById("email").value = item.email;
+            document.getElementById("password").value = item.password;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      function getURLParameter() {
+        var vars = {};
+        var parts = window.location.href.replace(
+          /[?&]+([^=&]+)=([^&]*)/gi,
+          function (m, key, value) {
+            vars[key] = value;
+          }
+        );
+        return vars.id;
+      }
+    </script>
   </body>
 </html>

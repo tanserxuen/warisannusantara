@@ -100,14 +100,14 @@
         event.preventDefault();
 
         axios
-          .post("https://warisan-01-37e0781fd6d2.herokuapp.com/login", {
+          .post("http://localhost:3000/login", {
             email: document.getElementById("email").value,
             password: document.getElementById("password").value,
           })
           .then(function (response) {
             if (response.data.status == "Success") {
               alert("Login successful");
-              window.location.href = "/views/index.html";
+              window.location.href = "/views/warisan.html";
             } else {
               alert(response.data.err);
             }

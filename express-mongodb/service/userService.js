@@ -29,4 +29,14 @@ async function editProfile(id, name, email, password) {
   );
 }
 
-module.exports = { register, authenticateUser, editProfile };
+async function getUserById(id) {
+  try {
+      var result = await User.findOne({_id: id.toString()});
+      if(result) return result;
+      else throw new Error("User not found");
+  } catch (error) {
+      console.error("Error retrieving User by id: ", error);
+  }
+}
+
+module.exports = { register, authenticateUser, editProfile, getUserById };

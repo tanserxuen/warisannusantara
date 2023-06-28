@@ -1,444 +1,584 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>Warisan Tradisional Bumi Nusantara</title>
     <style>
-        .logo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-        }
+      .logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+
+      .collapse.navbar-collapse {
+        justify-content: space-between;
+      }
     </style>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body>
-    
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">,<img class="logo" src="../express-mongodb/public/logo.jpg"></a>
+      <div class="container">
+        <a class="navbar-brand" href="#"
+          >,<img class="logo" src="../express-mongodb/public/logo.jpg"
+        /></a>
 
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#" id="all">all collections</a>
-                    <a class="nav-item nav-link" href="#" id="weapons">weapons and arms</a>
-                    <a class="nav-item nav-link" href="#" id="household">household items</a>
-                    <a class="nav-item nav-link" href="#" id="textile">textiles</a>
-                    <a class="nav-item nav-link" href="#" id="craving">carving and woodworks</a>
-                </div>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="#" id="all"
+              >all collections</a
+            >
+            <a class="nav-item nav-link" href="#" id="weapons"
+              >weapons and arms</a
+            >
+            <a class="nav-item nav-link" href="#" id="household"
+              >household items</a
+            >
+            <a class="nav-item nav-link" href="#" id="textile">textiles</a>
+            <a class="nav-item nav-link" href="#" id="craving"
+              >carving and woodworks</a
+            >
+          </div>
+          <div class="navbar-nav">
+            <a
+              class="nav-item nav-link"
+              href="/views/edit-profile.html?id="
+              id="edit-profile"
+              >Edit Profile</a
+            >
+          </div>
         </div>
+      </div>
     </nav>
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1 id="view-collection">all collections</h1>
-            </div>
+      <div class="row">
+        <div class="col">
+          <h1 id="username"></h1>
         </div>
-        <div class="row" id="card-content">
-            <h5>Item Names</h5>
-            <div class="row">
-
-            </div>
-        </div>
+      </div>
+      <div class="row" id="card-content">
+        <div class="row"></div>
+      </div>
     </div>
-</body>
-<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
-    crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function(){
-        // alert("Hello");
-        $.ajax({
-            url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan",
-            type: "GET",
-            dataType: "json",
-            success: function(result){
-                console.log(result);
-                $.each(result.semuaCollection, function (index, value) {
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.6.4.js"
+    integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+    crossorigin="anonymous"
+  ></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+  <script>
+    var uId = null;
+    $(document).ready(function () {
+      // alert("Hello");
+      axios.get("http://localhost:3000/user-id").then(function (response) {
+        console.log(response);
+        uId = response.data._id;
+        $("#edit-profile").attr("href", "/views/edit-profile.html?id=" + uId);
+        $("#username").text("Welcome, " + response.data.name + "!");
+      });
 
-                    var column = $('<div class="col-md-4"></div>');
-                    var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-                    var cardBody = $('<div class="card-body"></div>');
-                    var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
-                    var cardBody = $('<div class="card-body"></div>');
-                    var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-                    var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-                    var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-                    var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                    var cardLink = $('<a href="/views/update-items.html?id=' + value._id + '" class="btn btn-primary">Update</a> <input type="hidden" name="objectId" value='+ value._id+'> <a href="#" class="btn btn-delete"> Delete </a>');
+      $.ajax({
+        url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan",
+        type: "GET",
+        dataType: "json",
+        success: function (result) {
+          console.log(result);
+          $.each(result.semuaCollection, function (index, value) {
+            var column = $('<div class="col-md-4"></div>');
+            var card = $(
+              '<div class="card"  style="padding: 20px; margin-bottom: 10px;">'
+            );
+            var cardBody = $('<div class="card-body"></div>');
+            var cardImage = $(
+              "<img src=" + value.picture + ' alt="" class="card-img-top">'
+            );
 
-                    cardBody.append(cardTitle);
-                    cardBody.append(cardText);
-                    cardBody.append(cardLink);
+            var cardTitle = $('<h5 class="card-title">' + value.name + "</h5>");
+            var cardDesc = $(
+              '<p class="card-title">Description: ' + value.description + "</p>"
+            );
+            var cardCate = $(
+              '<h5 class="card-title">Category: ' + value.category + "</h5>"
+            );
+            var cardDate = $(
+              '<small class="card-title">Date: ' +
+                value.date +
+                "</small><br><br>"
+            );
+            var cardButton = $(
+              '<a href="/views/update-items.html?id=' +
+                value._id +
+                '" class="btn btn-primary">Update</a> <input type="hidden" name="objectId" value=' +
+                value._id +
+                '> <a href="#" class="btn btn-delete"> Delete </a>'
+            );
 
-                    card.append(cardImage);
-                    card.append(cardBody);
+            cardBody.append(cardCate);
+            cardBody.append(cardTitle);
+            cardBody.append(cardDesc);
+            cardBody.append(cardDate);
+            cardBody.append(cardButton);
 
-                    column.append(card);
-                    $('#card-content.row').append(column);
+            card.append(cardImage);
+            card.append(cardBody);
 
-                    // call specific item , and delete
-                        
+            column.append(card);
+            $("#card-content.row").append(column);
 
-                    
-                    // to delete the item button
-                });
+            // call specific item , and delete
 
-                $(".btn-delete").click(function (e) {
-                    e.preventDefault();
-                    var objectId = $(this).prev().val();
-                    // alert confirm dialog
-                    var r = confirm("Are you sure you want to delete this item?");
-                    if (r == true) {
-                        $.ajax({
-                            url: "http://localhost:3000/warisan/delete/" + objectId,
-                            type: "DELETE",
-                            dataType: "json",
-                            success: function (result) {
-                                location.reload();
-                            },
-                            error: function (xhr, status, err) {
-                                alert("Item not deleted");
-                            }
-                        });
-                    } else {
-                        alert("Item not deleted");
-                    }
+            // to delete the item button
+          });
 
-                })
+          $(".btn-delete").click(function (e) {
+            e.preventDefault();
+            var objectId = $(this).prev().val();
+            // alert confirm dialog
+            var r = confirm("Are you sure you want to delete this item?");
+            if (r == true) {
+              $.ajax({
+                url: "http://localhost:3000/warisan/delete/" + objectId,
+                type: "DELETE",
+                dataType: "json",
+                success: function (result) {
+                  location.reload();
+                },
+                error: function (xhr, status, err) {
+                  alert("Item not deleted");
+                },
+              });
+            } else {
+              alert("Item not deleted");
             }
-        })
+          });
+        },
+      });
 
-        
+      $("#all").click(function (e) {
+        e.preventDefault();
+        $("#card-content.row").empty();
 
+        $.ajax({
+          url: "http://localhost:3000/warisan/",
+          type: "GET",
+          dataType: "json",
+          success: function (result) {
+            console.log(result);
+            $.each(result.semuaCollection, function (index, value) {
+              var column = $('<div class="col-md-4"></div>');
+              var card = $(
+                '<div class="card"  style="padding: 20px; margin-bottom: 10px;">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardImage = $(
+                "<img src=" + value.picture + ' alt="" class="card-img-top">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardTitle = $(
+                '<h5 class="card-title">Name: ' + value.name + "</h5>"
+              );
+              var cardText = $(
+                "<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Description: ' +
+                  value.description +
+                  "</h5>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Category: ' +
+                  value.category +
+                  '</h5>\n<h5 class="card-title">Date: ' +
+                  value.date +
+                  "</h5>"
+              );
+              var cardLink = $(
+                '<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' +
+                  value._id +
+                  '> <a href="#" class="btn btn-delete"> Delete </a>'
+              );
 
-        $("#all").click(function (e){
-            e.preventDefault();
-            $('#card-content.row').empty();
+              cardBody.append(cardTitle);
+              cardBody.append(cardText);
+              cardBody.append(cardLink);
 
-            $.ajax({
-                url: "http://localhost:3000/warisan/",
-                type: "GET",
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    $.each(result.semuaCollection, function (index, value) {
+              card.append(cardImage);
+              card.append(cardBody);
 
-                        var column = $('<div class="col-md-4"></div>');
-                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
+              column.append(card);
+              $("#card-content.row").append(column);
+            });
+            // display the data
 
-                        cardBody.append(cardTitle);
-                        cardBody.append(cardText);
-                        cardBody.append(cardLink);
-
-                        card.append(cardImage);
-                        card.append(cardBody);
-
-                        column.append(card);
-                        $('#card-content.row').append(column);
-
-                    });
-                    // display the data
-
-                    // alert(result);
-                    $(".btn-delete").click(function (e) {
-                        e.preventDefault();
-                        var objectId = $(this).prev().val();
-                        // alert confirm dialog
-                        var r = confirm("Are you sure you want to delete this item?");
-                        if (r == true) {
-                            alert("Item deleted");
-                            $.ajax({
-                                url: "http://localhost:3000/warisan/delete/" + objectId,
-                                type: "DELETE",
-                                dataType: "json",
-                                success: function (result) {
-                                    alert("Item deleted");
-                                    location.reload();
-                                },
-                                error: function (xhr, status, err) {
-                                    alert("Item not deleted");
-                                }
-                            });
-                        } else {
-                            alert("Item not deleted");
-                        }
-
-                    })
-                }
-            })
-        })
-        
-        $('#weapons').click(function (e) { 
-            e.preventDefault();
-            $('#card-content.row').empty();
-
-            $.ajax({
-                url: "http://localhost:3000/warisan/category/weapons",
-                type: "GET",
-                dataType: "json",
-                success: function(result){
-                    console.log(result);
-                    $.each(result, function (index, value) {
-
-                        var column = $('<div class="col-md-4"></div>');
-                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
-
-                        cardBody.append(cardTitle);
-                        cardBody.append(cardText);
-                        cardBody.append(cardLink);
-
-                        card.append(cardImage);
-                        card.append(cardBody);
-
-                        column.append(card);
-                        $('#card-content.row').append(column);
-
-                    });
-                    // display the data
-
-                    // alert(result);
-                    $(".btn-delete").click(function (e) {
-                        e.preventDefault();
-                        var objectId = $(this).prev().val();
-                        // alert confirm dialog
-                        var r = confirm("Are you sure you want to delete this item?");
-                        if (r == true) {
-                            alert("Item deleted");
-                            $.ajax({
-                                url: "http://localhost:3000/warisan/delete/" + objectId,
-                                type: "DELETE",
-                                dataType: "json",
-                                success: function (result) {
-                                    alert("Item deleted");
-                                    location.reload();
-                                },
-                                error: function (xhr, status, err) {
-                                    alert("Item not deleted");
-                                }
-                            });
-                        } else {
-                            alert("Item not deleted");
-                        }
-
-                    })
-                }
-            })
-
+            // alert(result);
+            $(".btn-delete").click(function (e) {
+              e.preventDefault();
+              var objectId = $(this).prev().val();
+              // alert confirm dialog
+              var r = confirm("Are you sure you want to delete this item?");
+              if (r == true) {
+                alert("Item deleted");
+                $.ajax({
+                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  type: "DELETE",
+                  dataType: "json",
+                  success: function (result) {
+                    alert("Item deleted");
+                    location.reload();
+                  },
+                  error: function (xhr, status, err) {
+                    alert("Item not deleted");
+                  },
+                });
+              } else {
+                alert("Item not deleted");
+              }
+            });
+          },
         });
+      });
 
-        $('#household').click(function (e) { 
-            e.preventDefault();
-            $('#card-content.row').empty();
+      $("#weapons").click(function (e) {
+        e.preventDefault();
+        $("#card-content.row").empty();
 
-            $.ajax({
-                url: "http://localhost:3000/warisan/category/household",
-                type: "GET",
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    $.each(result, function (index, value) {
+        $.ajax({
+          url: "http://localhost:3000/warisan/category/weapons",
+          type: "GET",
+          dataType: "json",
+          success: function (result) {
+            console.log(result);
+            $.each(result, function (index, value) {
+              var column = $('<div class="col-md-4"></div>');
+              var card = $(
+                '<div class="card"  style="padding: 20px; margin-bottom: 10px;">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardImage = $(
+                "<img src=" + value.picture + ' alt="" class="card-img-top">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardTitle = $(
+                '<h5 class="card-title">Name: ' + value.name + "</h5>"
+              );
+              var cardText = $(
+                "<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Description: ' +
+                  value.description +
+                  "</h5>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Category: ' +
+                  value.category +
+                  '</h5>\n<h5 class="card-title">Date: ' +
+                  value.date +
+                  "</h5>"
+              );
+              var cardLink = $(
+                '<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' +
+                  value._id +
+                  '> <a href="#" class="btn btn-delete"> Delete </a>'
+              );
 
-                        var column = $('<div class="col-md-4"></div>');
-                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
+              cardBody.append(cardTitle);
+              cardBody.append(cardText);
+              cardBody.append(cardLink);
 
-                        cardBody.append(cardTitle);
-                        cardBody.append(cardText);
-                        cardBody.append(cardLink);
+              card.append(cardImage);
+              card.append(cardBody);
 
-                        card.append(cardImage);
-                        card.append(cardBody);
+              column.append(card);
+              $("#card-content.row").append(column);
+            });
+            // display the data
 
-                        column.append(card);
-                        $('#card-content.row').append(column);
-
-                    });
-                    // display the data
-
-                    // alert(result);
-                    $(".btn-delete").click(function (e) {
-                        e.preventDefault();
-                        var objectId = $(this).prev().val();
-                        // alert confirm dialog
-                        var r = confirm("Are you sure you want to delete this item?");
-                        if (r == true) {
-                            alert("Item deleted");
-                            $.ajax({
-                                url: "http://localhost:3000/warisan/delete/" + objectId,
-                                type: "DELETE",
-                                dataType: "json",
-                                success: function (result) {
-                                    alert("Item deleted");
-                                    location.reload();
-                                },
-                                error: function (xhr, status, err) {
-                                    alert("Item not deleted");
-                                }
-                            });
-                        } else {
-                            alert("Item not deleted");
-                        }
-
-                    })
-                }
-            })
+            // alert(result);
+            $(".btn-delete").click(function (e) {
+              e.preventDefault();
+              var objectId = $(this).prev().val();
+              // alert confirm dialog
+              var r = confirm("Are you sure you want to delete this item?");
+              if (r == true) {
+                alert("Item deleted");
+                $.ajax({
+                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  type: "DELETE",
+                  dataType: "json",
+                  success: function (result) {
+                    alert("Item deleted");
+                    location.reload();
+                  },
+                  error: function (xhr, status, err) {
+                    alert("Item not deleted");
+                  },
+                });
+              } else {
+                alert("Item not deleted");
+              }
+            });
+          },
         });
+      });
 
-        $('#textile').click(function (e) { 
-            e.preventDefault();
-            $('#card-content.row').empty();
-            $.ajax({
-                url: "http://localhost:3000/warisan/category/textiles",
-                type: "GET",
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    $.each(result, function (index, value) {
+      $("#household").click(function (e) {
+        e.preventDefault();
+        $("#card-content.row").empty();
 
-                        var column = $('<div class="col-md-4"></div>');
-                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
+        $.ajax({
+          url: "http://localhost:3000/warisan/category/household",
+          type: "GET",
+          dataType: "json",
+          success: function (result) {
+            console.log(result);
+            $.each(result, function (index, value) {
+              var column = $('<div class="col-md-4"></div>');
+              var card = $(
+                '<div class="card"  style="padding: 20px; margin-bottom: 10px;">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardImage = $(
+                "<img src=" + value.picture + ' alt="" class="card-img-top">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardTitle = $(
+                '<h5 class="card-title">Name: ' + value.name + "</h5>"
+              );
+              var cardText = $(
+                "<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Description: ' +
+                  value.description +
+                  "</h5>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Category: ' +
+                  value.category +
+                  '</h5>\n<h5 class="card-title">Date: ' +
+                  value.date +
+                  "</h5>"
+              );
+              var cardLink = $(
+                '<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' +
+                  value._id +
+                  '> <a href="#" class="btn btn-delete"> Delete </a>'
+              );
 
-                        cardBody.append(cardTitle);
-                        cardBody.append(cardText);
-                        cardBody.append(cardLink);
+              cardBody.append(cardTitle);
+              cardBody.append(cardText);
+              cardBody.append(cardLink);
 
-                        card.append(cardImage);
-                        card.append(cardBody);
+              card.append(cardImage);
+              card.append(cardBody);
 
-                        column.append(card);
-                        $('#card-content.row').append(column);
+              column.append(card);
+              $("#card-content.row").append(column);
+            });
+            // display the data
 
-                    });
-                    // display the data
-
-                    // alert(result);
-                    $(".btn-delete").click(function (e) {
-                        e.preventDefault();
-                        var objectId = $(this).prev().val();
-                        // alert confirm dialog
-                        var r = confirm("Are you sure you want to delete this item?");
-                        if (r == true) {
-                            alert("Item deleted");
-                            $.ajax({
-                                url: "http://localhost:3000/warisan/delete/" + objectId,
-                                type: "DELETE",
-                                dataType: "json",
-                                success: function (result) {
-                                    alert("Item deleted");
-                                    location.reload();
-                                },
-                                error: function (xhr, status, err) {
-                                    alert("Item not deleted");
-                                }
-                            });
-                        } else {
-                            alert("Item not deleted");
-                        }
-
-                    })
-                }
-            })
+            // alert(result);
+            $(".btn-delete").click(function (e) {
+              e.preventDefault();
+              var objectId = $(this).prev().val();
+              // alert confirm dialog
+              var r = confirm("Are you sure you want to delete this item?");
+              if (r == true) {
+                alert("Item deleted");
+                $.ajax({
+                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  type: "DELETE",
+                  dataType: "json",
+                  success: function (result) {
+                    alert("Item deleted");
+                    location.reload();
+                  },
+                  error: function (xhr, status, err) {
+                    alert("Item not deleted");
+                  },
+                });
+              } else {
+                alert("Item not deleted");
+              }
+            });
+          },
         });
+      });
 
-        $('#craving').click(function (e) { 
-            e.preventDefault();
-            $('#card-content.row').empty();
-            $.ajax({
-                url: "http://localhost:3000/warisan/category/carving",
-                type: "GET",
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    $.each(result, function (index, value) {
+      $("#textile").click(function (e) {
+        e.preventDefault();
+        $("#card-content.row").empty();
+        $.ajax({
+          url: "http://localhost:3000/warisan/category/textiles",
+          type: "GET",
+          dataType: "json",
+          success: function (result) {
+            console.log(result);
+            $.each(result, function (index, value) {
+              var column = $('<div class="col-md-4"></div>');
+              var card = $(
+                '<div class="card"  style="padding: 20px; margin-bottom: 10px;">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardImage = $(
+                "<img src=" + value.picture + ' alt="" class="card-img-top">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardTitle = $(
+                '<h5 class="card-title">Name: ' + value.name + "</h5>"
+              );
+              var cardText = $(
+                "<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Description: ' +
+                  value.description +
+                  "</h5>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Category: ' +
+                  value.category +
+                  '</h5>\n<h5 class="card-title">Date: ' +
+                  value.date +
+                  "</h5>"
+              );
+              var cardLink = $(
+                '<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' +
+                  value._id +
+                  '> <a href="#" class="btn btn-delete"> Delete </a>'
+              );
 
-                        var column = $('<div class="col-md-4"></div>');
-                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
-                        var cardBody = $('<div class="card-body"></div>');
-                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
+              cardBody.append(cardTitle);
+              cardBody.append(cardText);
+              cardBody.append(cardLink);
 
-                        cardBody.append(cardTitle);
-                        cardBody.append(cardText);
-                        cardBody.append(cardLink);
+              card.append(cardImage);
+              card.append(cardBody);
 
-                        card.append(cardImage);
-                        card.append(cardBody);
+              column.append(card);
+              $("#card-content.row").append(column);
+            });
+            // display the data
 
-                        column.append(card);
-                        $('#card-content.row').append(column);
-
-                    });
-                    // display the data
-
-                    // alert(result);
-                    $(".btn-delete").click(function (e) {
-                        e.preventDefault();
-                        var objectId = $(this).prev().val();
-                        // alert confirm dialog
-                        var r = confirm("Are you sure you want to delete this item?");
-                        if (r == true) {
-                            alert("Item deleted");
-                            $.ajax({
-                                url: "http://localhost:3000/warisan/delete/" + objectId,
-                                type: "DELETE",
-                                dataType: "json",
-                                success: function (result) {
-                                    alert("Item deleted");
-                                    location.reload();
-                                },
-                                error: function (xhr, status, err) {
-                                    alert("Item not deleted");
-                                }
-                            });
-                        } else {
-                            alert("Item not deleted");
-                        }
-
-                    })
-                }
-            })
+            // alert(result);
+            $(".btn-delete").click(function (e) {
+              e.preventDefault();
+              var objectId = $(this).prev().val();
+              // alert confirm dialog
+              var r = confirm("Are you sure you want to delete this item?");
+              if (r == true) {
+                alert("Item deleted");
+                $.ajax({
+                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  type: "DELETE",
+                  dataType: "json",
+                  success: function (result) {
+                    alert("Item deleted");
+                    location.reload();
+                  },
+                  error: function (xhr, status, err) {
+                    alert("Item not deleted");
+                  },
+                });
+              } else {
+                alert("Item not deleted");
+              }
+            });
+          },
         });
+      });
 
+      $("#craving").click(function (e) {
+        e.preventDefault();
+        $("#card-content.row").empty();
+        $.ajax({
+          url: "http://localhost:3000/warisan/category/carving",
+          type: "GET",
+          dataType: "json",
+          success: function (result) {
+            console.log(result);
+            $.each(result, function (index, value) {
+              var column = $('<div class="col-md-4"></div>');
+              var card = $(
+                '<div class="card"  style="padding: 20px; margin-bottom: 10px;">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardImage = $(
+                "<img src=" + value.picture + ' alt="" class="card-img-top">'
+              );
+              var cardBody = $('<div class="card-body"></div>');
+              var cardTitle = $(
+                '<h5 class="card-title">Name: ' + value.name + "</h5>"
+              );
+              var cardText = $(
+                "<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Description: ' +
+                  value.description +
+                  "</h5>"
+              );
+              var cardTitle = $(
+                '<h5 class="card-title">Category: ' +
+                  value.category +
+                  '</h5>\n<h5 class="card-title">Date: ' +
+                  value.date +
+                  "</h5>"
+              );
+              var cardLink = $(
+                '<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' +
+                  value._id +
+                  '> <a href="#" class="btn btn-delete"> Delete </a>'
+              );
+
+              cardBody.append(cardTitle);
+              cardBody.append(cardText);
+              cardBody.append(cardLink);
+
+              card.append(cardImage);
+              card.append(cardBody);
+
+              column.append(card);
+              $("#card-content.row").append(column);
+            });
+            // display the data
+
+            // alert(result);
+            $(".btn-delete").click(function (e) {
+              e.preventDefault();
+              var objectId = $(this).prev().val();
+              // alert confirm dialog
+              var r = confirm("Are you sure you want to delete this item?");
+              if (r == true) {
+                alert("Item deleted");
+                $.ajax({
+                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  type: "DELETE",
+                  dataType: "json",
+                  success: function (result) {
+                    alert("Item deleted");
+                    location.reload();
+                  },
+                  error: function (xhr, status, err) {
+                    alert("Item not deleted");
+                  },
+                });
+              } else {
+                alert("Item not deleted");
+              }
+            });
+          },
+        });
+      });
     });
-</script>
+  </script>
 </html>

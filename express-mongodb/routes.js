@@ -10,6 +10,7 @@ const {
   authenticateUser,
   register,
   editProfile,
+  getUserById,
 } = require("./service/userService");
 const {
   getAllWarisanNusantara,
@@ -55,6 +56,7 @@ const upload = multer({
 });
 
 router.post("/login", async (req, res) => {
+  console.log("abc")
   await authenticateUser(req.body.email, req.body.password)
     .then((result) => {
       loggedInUser = result.user;
@@ -73,11 +75,27 @@ router.get("/register", async (req, res) => {
 router.post("/register", async (req, res) => {
   await register(req.body.name, req.body.email, req.body.password)
     .then((result) => {
-      res.json({ message: "Register Successful", status: "Success" });
+      res.json({ message: "Register Successful"});
     })
     .catch((err) => {
       res.json({ err: "Server Error" });
     });
+});
+
+
+router.get("/user-id", async (req, res) => {
+  res.json(loggedInUser);
+});
+
+router.get("/user/:id", async (req, res) => {
+  try {
+    await getUserById(req.params.id).then((result) => {
+      res.json(result);
+    });
+  } catch (error) {
+    console.error("Error retrieving user: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 router.get("/profile/edit", (req, res) => {
@@ -212,8 +230,7 @@ router.get("/warisan/category/:category", async (req, res) => {
 });
 
 // edit warisanNusantara
-router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => {
-  
+router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => {  
   const picture = req.file;
 
   try {
