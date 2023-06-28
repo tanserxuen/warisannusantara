@@ -59,7 +59,8 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <h1 id="username"></h1>
+          <!-- <h1 id="username"></h1> -->
+          <br></br>
         </div>
       </div>
       <div class="row" id="card-content">
@@ -82,7 +83,7 @@
         console.log(response);
         uId = response.data._id;
         $("#edit-profile").attr("href", "/views/edit-profile.html?id=" + uId);
-        $("#username").text("Welcome, " + response.data.name + "!");
+        // $("#username").text("Welcome, " + response.data.name + "!");
       });
 
       $.ajax({

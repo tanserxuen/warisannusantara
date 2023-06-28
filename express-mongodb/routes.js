@@ -49,11 +49,9 @@ const upload = multer({
 });
 
 router.post("/login", async (req, res) => {
-  console.log("abc")
   await authenticateUser(req.body.email, req.body.password)
     .then((result) => {
       loggedInUser = result.user;
-      console.log({ loggedInUser });
       res.json({ message: "Login Successful", status: "Success" });
     })
     .catch((err) => {
@@ -88,19 +86,27 @@ router.get("/user/:id", async (req, res) => {
 });
 
 router.put("/profile/update", async (req, res) => {
-  await editProfile(
-    loggedInUser._id,
-    req.body.name,
-    req.body.email,
-    req.body.password
-  )
-    .then((result) => {
-      if (result) {
-        loggedInUser = result;
-        res.json({ message: "Update Successful", status: "Success" });
-      } else res.json({ err: "Server Error" });
-    })
-    .catch((err) => res.json({ err: "Server Error" }));
+  try{
+    console.log(req.body.name, req.body.email, req.body.password);
+
+    await editProfile(
+      loggedInUser._id,
+      req.body.name,
+      req.body.email,
+      req.body.password
+    )
+      .then((result) => {
+        if (result) {
+          console.log("result")
+          console.log(result)
+          loggedInUser = result;
+          res.json({ message: "Update Successful", status: "Success" });
+        } else res.json({ err: "Server Error" });
+      })
+      .catch((err) => res.json({ err: "Server Error" }));
+  }catch(err){
+    console.log(err)
+  }
 });
 
 //  get all warisanNusantara

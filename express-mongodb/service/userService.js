@@ -23,10 +23,19 @@ async function authenticateUser(email, password) {
 
 async function editProfile(id, name, email, password) {
   console.log(id, name, email, password);
-  return await User.findOneAndUpdate(
+  User.findOneAndUpdate(
     { email: email },
     { name: name, password: password }
-  );
+  ).then((result) => {
+    console.log("controller-side result")
+    console.log(result)
+    return { result };
+  });
+  // return user;
+  // return await User.findOneAndUpdate(
+  //   { email: email },
+  //   { name: name, password: password }
+  // );
 }
 
 async function getUserById(id) {
