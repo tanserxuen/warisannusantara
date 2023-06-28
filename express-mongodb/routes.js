@@ -232,7 +232,6 @@ router.put("/warisan/update/:id", async (req, res) => {
       picture
       ).then((result) => {
         res.json({ message: "Update Successful", status: "Success" });
-      // res.render("warisan.html");
     });
   } catch (error) {
     console.error("Error editing warisan nusantara: ", error);
