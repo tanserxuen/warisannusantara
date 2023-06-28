@@ -131,7 +131,7 @@
         formData.append("picture", picture);
 
         $.ajax({
-          url: "http://localhost:3000/warisan/update/" + warisanId + "",
+          url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/update/" + warisanId + "",
           type: "PUT",
           data: formData,
           processData: false,
@@ -150,7 +150,7 @@
         })
 
         // axios
-        //   .put("http://localhost:3000/warisan/update/" + warisanId, {
+        //   .put("https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/update/" + warisanId, {
         //     category,
         //     name,
         //     description,
@@ -172,7 +172,7 @@
 
       async function getDetails() {
         await axios
-          .get("http://localhost:3000/warisan/" + warisanId)
+          .get("https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/" + warisanId)
           .then((response) => {
             const item = response.data;
             document.getElementById("category").value = item.category;

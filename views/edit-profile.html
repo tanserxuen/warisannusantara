@@ -132,7 +132,7 @@
       async function getUserDetails() {
         console.log(getURLParameter());
         await axios
-          .get("http://localhost:3000/user/" + getURLParameter())
+          .get("https://warisan-01-37e0781fd6d2.herokuapp.com/user/" + getURLParameter())
           .then((response) => {
             const item = response.data;
             document.getElementById("name").value = item.name;

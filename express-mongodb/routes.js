@@ -96,12 +96,10 @@ router.put("/profile/update", async (req, res) => {
       req.body.password
     )
       .then((result) => {
-        if (result) {
-          console.log("result")
-          console.log(result)
-          loggedInUser = result;
-          res.json({ message: "Update Successful", status: "Success" });
-        } else res.json({ err: "Server Error" });
+        console.log("result")
+        console.log(result)
+        loggedInUser = result;
+        res.json({ result , message: "Update Successful", status: "Success" });
       })
       .catch((err) => res.json({ err: "Server Error" }));
   }catch(err){

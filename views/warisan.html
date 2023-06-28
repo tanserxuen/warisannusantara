@@ -60,7 +60,17 @@
       <div class="row">
         <div class="col">
           <!-- <h1 id="username"></h1> -->
+
           <br></br>
+
+            <div class="row">
+                <div class="col">
+                <a href="/views/create-items.html" class="btn btn-primary"
+                    >Create New Item</a
+                >
+                </div>
+
+                <br></br>
         </div>
       </div>
       <div class="row" id="card-content">
@@ -79,7 +89,7 @@
     var uId = null;
     $(document).ready(function () {
       // alert("Hello");
-      axios.get("http://localhost:3000/user-id").then(function (response) {
+      axios.get("https://warisan-01-37e0781fd6d2.herokuapp.com/user-id").then(function (response) {
         console.log(response);
         uId = response.data._id;
         $("#edit-profile").attr("href", "/views/edit-profile.html?id=" + uId);
@@ -146,7 +156,7 @@
             var r = confirm("Are you sure you want to delete this item?");
             if (r == true) {
               $.ajax({
-                url: "http://localhost:3000/warisan/delete/" + objectId,
+                url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/delete/" + objectId,
                 type: "DELETE",
                 dataType: "json",
                 success: function (result) {
@@ -168,7 +178,7 @@
         $("#card-content.row").empty();
 
         $.ajax({
-          url: "http://localhost:3000/warisan/",
+          url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/",
           type: "GET",
           dataType: "json",
           success: function (result) {
@@ -228,7 +238,7 @@
               if (r == true) {
                 alert("Item deleted");
                 $.ajax({
-                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/delete/" + objectId,
                   type: "DELETE",
                   dataType: "json",
                   success: function (result) {
@@ -252,7 +262,7 @@
         $("#card-content.row").empty();
 
         $.ajax({
-          url: "http://localhost:3000/warisan/category/weapons",
+          url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/category/weapons",
           type: "GET",
           dataType: "json",
           success: function (result) {
@@ -312,7 +322,7 @@
               if (r == true) {
                 alert("Item deleted");
                 $.ajax({
-                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/delete/" + objectId,
                   type: "DELETE",
                   dataType: "json",
                   success: function (result) {
@@ -336,7 +346,7 @@
         $("#card-content.row").empty();
 
         $.ajax({
-          url: "http://localhost:3000/warisan/category/household",
+          url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/category/household",
           type: "GET",
           dataType: "json",
           success: function (result) {
@@ -396,7 +406,7 @@
               if (r == true) {
                 alert("Item deleted");
                 $.ajax({
-                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/delete/" + objectId,
                   type: "DELETE",
                   dataType: "json",
                   success: function (result) {
@@ -419,7 +429,7 @@
         e.preventDefault();
         $("#card-content.row").empty();
         $.ajax({
-          url: "http://localhost:3000/warisan/category/textiles",
+          url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/category/textiles",
           type: "GET",
           dataType: "json",
           success: function (result) {
@@ -479,7 +489,7 @@
               if (r == true) {
                 alert("Item deleted");
                 $.ajax({
-                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/delete/" + objectId,
                   type: "DELETE",
                   dataType: "json",
                   success: function (result) {
@@ -502,7 +512,7 @@
         e.preventDefault();
         $("#card-content.row").empty();
         $.ajax({
-          url: "http://localhost:3000/warisan/category/carving",
+          url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/category/carving",
           type: "GET",
           dataType: "json",
           success: function (result) {
@@ -562,7 +572,7 @@
               if (r == true) {
                 alert("Item deleted");
                 $.ajax({
-                  url: "http://localhost:3000/warisan/delete/" + objectId,
+                  url: "https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/delete/" + objectId,
                   type: "DELETE",
                   dataType: "json",
                   success: function (result) {
