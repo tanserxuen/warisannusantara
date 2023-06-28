@@ -57,16 +57,6 @@ async function editWarisanNusantara(id, category, name, description, date, pictu
     }
 }
 
-// async function deleteWarisanNusantara(id) {
-//     try {
-//         var result = await WarisanNusantara.findByIdAndDelete(id);
-//         // var result = await WarisanNusantara.deleteOne({id});
-//         return result;
-//     } catch (error) {
-//         console.error("Error deleting warisan nusantara: ", error);
-//     }
-// }
-
 // Delete the waste by ID function
 async function deleteWarisanNusantara(id) {
     try {

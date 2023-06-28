@@ -21,13 +21,6 @@ const {
   deleteWarisanNusantara,
 } = require("./service/warisanService");
 
-/*----------------------------------
-/*
-/*
-/* start auth
-/*
------------------------------------*/
-
 //* To store logged in user details
 var loggedInUser = null;
 
@@ -68,10 +61,6 @@ router.post("/login", async (req, res) => {
     });
 });
 
-router.get("/register", async (req, res) => {
-  res.render("register.html", { err: null });
-});
-
 router.post("/register", async (req, res) => {
   await register(req.body.name, req.body.email, req.body.password)
     .then((result) => {
@@ -98,10 +87,6 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
-router.get("/profile/edit", (req, res) => {
-  res.render("edit-profile.html", { user: loggedInUser });
-});
-
 router.put("/profile/update", async (req, res) => {
   await editProfile(
     loggedInUser._id,
@@ -118,14 +103,6 @@ router.put("/profile/update", async (req, res) => {
     .catch((err) => res.json({ err: "Server Error" }));
 });
 
-/*----------------------------------
-/*
-/*
-/* end of auth
-/*
------------------------------------*/
-
-
 //  get all warisanNusantara
 router.get("/warisan", async (req, res) => {
   try {
@@ -138,10 +115,6 @@ router.get("/warisan", async (req, res) => {
     console.error("Error retrieving warisan nusantara: ", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-});
-
-router.get("/warisanview", async (req, res) => {
-  res.render("warisan.html");
 });
 
 // search specific warisanNsantara
@@ -157,24 +130,10 @@ router.get("/warisan/:id", async (req, res) => {
   }
 });
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "./public");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, file.originalname);
-//   },
-// });
-
-// const upload = multer({ storage: storage });
-
-// add new warisanNusantara
 router.post("/warisan", upload.single("picture"), async (req, res) => {
 
   const picture = req.file;
-
   try{
-    
     // Upload the file to Google Cloud Storage
     const gcsFileName = format('img/%s', picture.originalname); // Set the desired file path and name in the bucket
     const gcsFile = bucket.file(gcsFileName);
@@ -288,7 +247,6 @@ router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => 
 router.delete("/warisan/delete/:id", async (req, res) => {
   try {
     var id = req.params.id;
-    // res.json({ message: "here" });
     await deleteWarisanNusantara(id).then((result) => {
       res.json({ message: "Delete Successful", status: "Success" });
     });
@@ -296,18 +254,6 @@ router.delete("/warisan/delete/:id", async (req, res) => {
     console.error("Error deleting warisan nusantara: ", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-});
-
-router.get("/create-items", (req, res) => {
-  res.render("create-items.html", { err: null });
-});
-
-router.get("/dashboard", (req, res) => {
-  res.render("index.html", { err: null, user: loggedInUser });
-});
-
-router.get("/*", (req, res) => {
-  res.render("login.html", { err: null });
 });
 
 module.exports = router;
