@@ -88,11 +88,13 @@
       <input type="password" name="password" id="password" placeholder="Password" class="form-control" required minlength="8">
     </div>
     <!-- Error message handling -->
-    <% if(err) { %>
-    <p class="error-message"><%= err %></p>
-    <% } %>
+    <!-- <% if(err) { %> -->
+    <p class="error-message">
+      <!-- <%= err %> -->
+    </p>
+    <!-- <% } %> -->
     <div class="d-flex justify-content-between">
-      <a href="/login" class="btn btn-primary back-btn">Back</a>
+      <a href="/views/index.html" class="btn btn-primary back-btn">Back</a>
       <input type="submit" value="Register" class="btn btn-primary back-btn">
     </div>
   </form>

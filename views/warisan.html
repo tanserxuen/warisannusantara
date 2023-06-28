@@ -68,7 +68,7 @@
                     var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
                     var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
                     var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                    var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+                    var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value='+ value._id+'> <a href="#" class="btn btn-delete"> Delete </a>');
 
                     cardBody.append(cardTitle);
                     cardBody.append(cardText);
@@ -79,9 +79,41 @@
 
                     column.append(card);
                     $('#card-content.row').append(column);
+
+                    // call specific item , and delete
+                        
+
+                    
+                    // to delete the item button
                 });
+
+                $(".btn-delete").click(function (e) {
+                    e.preventDefault();
+                    var objectId = $(this).prev().val();
+                    // alert confirm dialog
+                    var r = confirm("Are you sure you want to delete this item?");
+                    if (r == true) {
+                        $.ajax({
+                            url: "http://localhost:3000/warisan/delete/" + objectId,
+                            type: "DELETE",
+                            dataType: "json",
+                            success: function (result) {
+                                location.reload();
+                            },
+                            error: function (xhr, status, err) {
+                                alert("Item not deleted");
+                            }
+                        });
+                    } else {
+                        alert("Item not deleted");
+                    }
+
+                })
             }
         })
+
+        
+
 
         $("#all").click(function (e){
             e.preventDefault();
@@ -104,7 +136,7 @@
                         var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
                         var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
                         var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
 
                         cardBody.append(cardTitle);
                         cardBody.append(cardText);
@@ -120,6 +152,30 @@
                     // display the data
 
                     // alert(result);
+                    $(".btn-delete").click(function (e) {
+                        e.preventDefault();
+                        var objectId = $(this).prev().val();
+                        // alert confirm dialog
+                        var r = confirm("Are you sure you want to delete this item?");
+                        if (r == true) {
+                            alert("Item deleted");
+                            $.ajax({
+                                url: "http://localhost:3000/warisan/delete/" + objectId,
+                                type: "DELETE",
+                                dataType: "json",
+                                success: function (result) {
+                                    alert("Item deleted");
+                                    location.reload();
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Item not deleted");
+                                }
+                            });
+                        } else {
+                            alert("Item not deleted");
+                        }
+
+                    })
                 }
             })
         })
@@ -145,7 +201,7 @@
                         var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
                         var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
                         var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
 
                         cardBody.append(cardTitle);
                         cardBody.append(cardText);
@@ -161,6 +217,30 @@
                     // display the data
 
                     // alert(result);
+                    $(".btn-delete").click(function (e) {
+                        e.preventDefault();
+                        var objectId = $(this).prev().val();
+                        // alert confirm dialog
+                        var r = confirm("Are you sure you want to delete this item?");
+                        if (r == true) {
+                            alert("Item deleted");
+                            $.ajax({
+                                url: "http://localhost:3000/warisan/delete/" + objectId,
+                                type: "DELETE",
+                                dataType: "json",
+                                success: function (result) {
+                                    alert("Item deleted");
+                                    location.reload();
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Item not deleted");
+                                }
+                            });
+                        } else {
+                            alert("Item not deleted");
+                        }
+
+                    })
                 }
             })
 
@@ -187,7 +267,7 @@
                         var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
                         var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
                         var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
 
                         cardBody.append(cardTitle);
                         cardBody.append(cardText);
@@ -203,6 +283,30 @@
                     // display the data
 
                     // alert(result);
+                    $(".btn-delete").click(function (e) {
+                        e.preventDefault();
+                        var objectId = $(this).prev().val();
+                        // alert confirm dialog
+                        var r = confirm("Are you sure you want to delete this item?");
+                        if (r == true) {
+                            alert("Item deleted");
+                            $.ajax({
+                                url: "http://localhost:3000/warisan/delete/" + objectId,
+                                type: "DELETE",
+                                dataType: "json",
+                                success: function (result) {
+                                    alert("Item deleted");
+                                    location.reload();
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Item not deleted");
+                                }
+                            });
+                        } else {
+                            alert("Item not deleted");
+                        }
+
+                    })
                 }
             })
         });
@@ -227,7 +331,7 @@
                         var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
                         var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
                         var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
 
                         cardBody.append(cardTitle);
                         cardBody.append(cardText);
@@ -243,6 +347,30 @@
                     // display the data
 
                     // alert(result);
+                    $(".btn-delete").click(function (e) {
+                        e.preventDefault();
+                        var objectId = $(this).prev().val();
+                        // alert confirm dialog
+                        var r = confirm("Are you sure you want to delete this item?");
+                        if (r == true) {
+                            alert("Item deleted");
+                            $.ajax({
+                                url: "http://localhost:3000/warisan/delete/" + objectId,
+                                type: "DELETE",
+                                dataType: "json",
+                                success: function (result) {
+                                    alert("Item deleted");
+                                    location.reload();
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Item not deleted");
+                                }
+                            });
+                        } else {
+                            alert("Item not deleted");
+                        }
+
+                    })
                 }
             })
         });
@@ -267,7 +395,7 @@
                         var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
                         var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
                         var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value=' + value._id + '> <a href="#" class="btn btn-delete"> Delete </a>');
 
                         cardBody.append(cardTitle);
                         cardBody.append(cardText);
@@ -283,6 +411,30 @@
                     // display the data
 
                     // alert(result);
+                    $(".btn-delete").click(function (e) {
+                        e.preventDefault();
+                        var objectId = $(this).prev().val();
+                        // alert confirm dialog
+                        var r = confirm("Are you sure you want to delete this item?");
+                        if (r == true) {
+                            alert("Item deleted");
+                            $.ajax({
+                                url: "http://localhost:3000/warisan/delete/" + objectId,
+                                type: "DELETE",
+                                dataType: "json",
+                                success: function (result) {
+                                    alert("Item deleted");
+                                    location.reload();
+                                },
+                                error: function (xhr, status, err) {
+                                    alert("Item not deleted");
+                                }
+                            });
+                        } else {
+                            alert("Item not deleted");
+                        }
+
+                    })
                 }
             })
         });

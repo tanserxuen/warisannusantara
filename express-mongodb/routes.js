@@ -240,11 +240,12 @@ router.post("/warisan/update/:id", async (req, res) => {
 });
 
 // delete warisanNusantara
-router.get("/warisan/delete/:id", async (req, res) => {
+router.delete("/warisan/delete/:id", async (req, res) => {
   try {
     var id = req.params.id;
+    // res.json({ message: "here" });
     await deleteWarisanNusantara(id).then((result) => {
-      res.render("warisan.html");
+      res.json({ message: "Delete Successful", status: "Success" });
     });
   } catch (error) {
     console.error("Error deleting warisan nusantara: ", error);
