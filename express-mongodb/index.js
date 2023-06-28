@@ -40,5 +40,5 @@ app.use(express.static("public"));
 
 app.use('/', routes);
 
-var port = process.env.PORT || 5500;
-app.listen(port, () => console.log("Server is running"));
+var port = process.env.PORT || 3000;
+app.listen(port, () => console.log(port + ":Server is running"));

@@ -53,52 +53,6 @@ const upload = multer({
   },
 });
 
-router.post('/addwaste', upload.single('image'), async (req, res) => {
-  try {
-    const name = req.body.name;
-    const description = req.body.description;
-    const category = req.body.category;
-    const image = req.file;
-
-    // Upload the file to Google Cloud Storage
-    const gcsFileName = format('img/%s', image.originalname); // Set the desired file path and name in the bucket
-    const gcsFile = bucket.file(gcsFileName);
-
-    const stream = gcsFile.createWriteStream({
-      metadata: {
-        contentType: image.mimetype,
-        predefinedAcl: 'publicRead', // Set the ACL to public-read
-      },
-    });
-
-    stream.on('error', (err) => {
-      console.error(err);
-      return res.status(500).json({ message: 'Error uploading file to Google Cloud Storage' });
-    });
-
-    stream.on('finish', async () => {
-      const publicUrl = format('https://storage.googleapis.com/%s/%s', bucketName, gcsFileName);
-
-      // Perform other operations with the uploaded data
-      const publisher = req.body.publisher;
-      const lastUpdated = req.body.lastUpdated;
-
-      try {
-        const result = await add_waste(name, description, category, publicUrl, publisher, lastUpdated);
-        return res.json({ message: result });
-      } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: 'Error saving data to the database' });
-      }
-    });
-
-    stream.end(image.buffer);
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: 'Error processing the request' });
-  }
-});
-
 router.post("/login", async (req, res) => {
   await authenticateUser(req.body.email, req.body.password)
     .then((result) => {
@@ -152,6 +106,7 @@ router.put("/profile/update", async (req, res) => {
 /*
 -----------------------------------*/
 
+
 //  get all warisanNusantara
 router.get("/warisan", async (req, res) => {
   try {
@@ -200,6 +155,7 @@ router.post("/warisan", upload.single("picture"), async (req, res) => {
   const picture = req.file;
 
   try{
+    
     // Upload the file to Google Cloud Storage
     const gcsFileName = format('img/%s', picture.originalname); // Set the desired file path and name in the bucket
     const gcsFile = bucket.file(gcsFileName);

@@ -10,6 +10,15 @@ async function getAllWarisanNusantara() {
     }
 }
 
+async function getWarisanNusantarByCategory(category) {
+    try{
+        var result = await WarisanNusantara.find({category: category});
+        return result;
+    }catch(error){
+        console.error("Error retrieving warisan nusantara: ", error);
+    }
+}
+
 async function getWarisanNusantaraById(id) {
     try {
         var result = await WarisanNusantara.findOne({_id: id});
