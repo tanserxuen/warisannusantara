@@ -128,10 +128,10 @@ router.get("/warisanview", async (req, res) => {
 
 // search specific warisanNsantara
 router.get("/warisan/:id", async (req, res) => {
+  console.log(req.params.id);
   try {
     await getWarisanNusantaraById(req.params.id).then((result) => {
-      // res.json(result);
-      res.render("update-items.html", { item: result });
+      res.json(result);
     });
   } catch (error) {
     console.error("Error retrieving warisan nusantara: ", error);
@@ -212,17 +212,17 @@ router.get("/warisan/category/:category", async (req, res) => {
 });
 
 // edit warisanNusantara
-router.post("/warisan/update/:id", async (req, res) => {
-  // return res.json({ message: "Update Method here" });
+router.put("/warisan/update/:id", async (req, res) => {
+  console.log("abc");
   try {
     var id = req.params.id;
-
+    
     var category = req.body.category;
     var name = req.body.name;
     var description = req.body.description;
     var date = req.body.date;
     var picture = req.body.picture;
-
+    
     await editWarisanNusantara(
       id,
       category,
@@ -230,8 +230,9 @@ router.post("/warisan/update/:id", async (req, res) => {
       description,
       date,
       picture
-    ).then((result) => {
-      res.render("warisan.html");
+      ).then((result) => {
+        res.json({ message: "Update Successful", status: "Success" });
+      // res.render("warisan.html");
     });
   } catch (error) {
     console.error("Error editing warisan nusantara: ", error);

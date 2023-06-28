@@ -68,7 +68,7 @@
                     var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
                     var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
                     var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                    var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a> <input type="hidden" name="objectId" value='+ value._id+'> <a href="#" class="btn btn-delete"> Delete </a>');
+                    var cardLink = $('<a href="/views/update-items.html?id=' + value._id + '" class="btn btn-primary">Update</a> <input type="hidden" name="objectId" value='+ value._id+'> <a href="#" class="btn btn-delete"> Delete </a>');
 
                     cardBody.append(cardTitle);
                     cardBody.append(cardText);

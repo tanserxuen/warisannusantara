@@ -21,7 +21,7 @@ async function getWarisanNusantaraByCategory(category) {
 
 async function getWarisanNusantaraById(id) {
     try {
-        var result = await WarisanNusantara.findOne({_id: id});
+        var result = await WarisanNusantara.findOne({_id: id.toString()});
         if(result) return result;
         else throw new Error("Warisan Nusantara not found");
     } catch (error) {
@@ -41,7 +41,7 @@ async function addWarisanNusantara(category, name, description, date, picture) {
 
 async function editWarisanNusantara(id, category, name, description, date, picture) {
     try {
-        const warisan = await WarisanNusantara.findById(id); 
+        const warisan = await WarisanNusantara.findById(id.toString()); 
         if(!warisan) throw new Error("Warisan Nusantara not found");
 
         warisan.category = category;
