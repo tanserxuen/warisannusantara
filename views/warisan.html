@@ -22,7 +22,7 @@
 
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#">all collections</a>
+                    <a class="nav-item nav-link active" href="#" id="all">all collections</a>
                     <a class="nav-item nav-link" href="#" id="weapons">weapons and arms</a>
                     <a class="nav-item nav-link" href="#" id="household">household items</a>
                     <a class="nav-item nav-link" href="#" id="textile">textiles</a>
@@ -56,24 +56,13 @@
             dataType: "json",
             success: function(result){
                 console.log(result);
-                // var tableRow = "";
-                // $.each(result.semuaCollection, function(key, value){
-                //     tableRow += '<tr>';
-                //     tableRow += '<td>'+value.name+'</td>';
-                //     tableRow += '<td>'+value.description+'</td>';
-                //     tableRow += '<td><a href="https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/delete/'+value._id+'" class="delete-button ">Delete</a>';
-                //     tableRow += '<a href="https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/'+value._id+'" class="update-button ">Update</a></td>';
-                //     tableRow += '</tr>';
-                // });
-                // $('table').append(tableRow);
                 $.each(result.semuaCollection, function (index, value) {
-                    // console.log(index);
-                    // console.log(value.kategori)
+
 
                     var column = $('<div class="col-md-4"></div>');
                     var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
                     var cardBody = $('<div class="card-body"></div>');
-                    var cardImage = $('<img src=../../express-mongodb/public/' + value.picture + ' alt="" class="card-img-top">');
+                    var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
                     var cardBody = $('<div class="card-body"></div>');
                     var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
                     var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
@@ -90,163 +79,214 @@
 
                     column.append(card);
                     $('#card-content.row').append(column);
-
-                    // $('.nav-link').mouseover(function (e) {
-                    //     if (value.category == $(this).text()) {
-                    //         $('#card-content.row').empty();
-                    //     }
-
-                    //     $('h1').html($(this).html());
-                    //     // $(selector).html() = value.kategori;
-                    //     var column = $('<div class="col-md-4"></div>');
-                    //     var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-                    //     var cardBody = $('<div class="card-body"></div>');
-                    //     var cardImage = $('<img src=../../express-mongodb/public/' + value.picture + ' alt="" class="card-img-top">');
-                    //     var cardBody = $('<div class="card-body"></div>');
-                    //     var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-                    //     var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-                    //     var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-                    //     var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-                    //     var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
-
-                    //     cardBody.append(cardTitle);
-                    //     cardBody.append(cardText);
-                    //     cardBody.append(cardLink);
-
-                    //     card.append(cardImage);
-                    //     card.append(cardBody);
-
-                    //     column.append(card);
-                    //     $('#card-content.row').append(column);
-
-                    // });
-
-                    // $('.nav-link').mouseout(function (e) {
-
-                    // });
                 });
             }
+        })
+
+        $("#all").click(function (e){
+            e.preventDefault();
+            $('#card-content.row').empty();
+
+            $.ajax({
+                url: "http://localhost:3000/warisan/",
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    $.each(result.semuaCollection, function (index, value) {
+
+                        var column = $('<div class="col-md-4"></div>');
+                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
+                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
+                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
+                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+
+                        cardBody.append(cardTitle);
+                        cardBody.append(cardText);
+                        cardBody.append(cardLink);
+
+                        card.append(cardImage);
+                        card.append(cardBody);
+
+                        column.append(card);
+                        $('#card-content.row').append(column);
+
+                    });
+                    // display the data
+
+                    // alert(result);
+                }
+            })
         })
         
         $('#weapons').click(function (e) { 
             e.preventDefault();
-            alert("weapons");
-
-            // $.ajax({
-            //     url="https://warisan-01-37e0781fd6d2.herokuapp.com/warisan/category/weapons and arms",
-            // })
-
-            // empty the data
             $('#card-content.row').empty();
+
+            $.ajax({
+                url: "http://localhost:3000/warisan/category/weapons",
+                type: "GET",
+                dataType: "json",
+                success: function(result){
+                    console.log(result);
+                    $.each(result, function (index, value) {
+
+                        var column = $('<div class="col-md-4"></div>');
+                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
+                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
+                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
+                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+
+                        cardBody.append(cardTitle);
+                        cardBody.append(cardText);
+                        cardBody.append(cardLink);
+
+                        card.append(cardImage);
+                        card.append(cardBody);
+
+                        column.append(card);
+                        $('#card-content.row').append(column);
+
+                    });
+                    // display the data
+
+                    // alert(result);
+                }
+            })
 
         });
 
         $('#household').click(function (e) { 
             e.preventDefault();
-            alert("houlsehold");
+            $('#card-content.row').empty();
+
+            $.ajax({
+                url: "http://localhost:3000/warisan/category/household",
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    $.each(result, function (index, value) {
+
+                        var column = $('<div class="col-md-4"></div>');
+                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
+                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
+                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
+                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+
+                        cardBody.append(cardTitle);
+                        cardBody.append(cardText);
+                        cardBody.append(cardLink);
+
+                        card.append(cardImage);
+                        card.append(cardBody);
+
+                        column.append(card);
+                        $('#card-content.row').append(column);
+
+                    });
+                    // display the data
+
+                    // alert(result);
+                }
+            })
         });
 
         $('#textile').click(function (e) { 
             e.preventDefault();
-            alert("textile");
+            $('#card-content.row').empty();
+            $.ajax({
+                url: "http://localhost:3000/warisan/category/textiles",
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    $.each(result, function (index, value) {
+
+                        var column = $('<div class="col-md-4"></div>');
+                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
+                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
+                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
+                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+
+                        cardBody.append(cardTitle);
+                        cardBody.append(cardText);
+                        cardBody.append(cardLink);
+
+                        card.append(cardImage);
+                        card.append(cardBody);
+
+                        column.append(card);
+                        $('#card-content.row').append(column);
+
+                    });
+                    // display the data
+
+                    // alert(result);
+                }
+            })
         });
 
         $('#craving').click(function (e) { 
             e.preventDefault();
-            alert("craving");
+            $('#card-content.row').empty();
+            $.ajax({
+                url: "http://localhost:3000/warisan/category/carving",
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    $.each(result, function (index, value) {
+
+                        var column = $('<div class="col-md-4"></div>');
+                        var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardImage = $('<img src=' + value.picture + ' alt="" class="card-img-top">');
+                        var cardBody = $('<div class="card-body"></div>');
+                        var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
+                        var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
+                        var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
+                        var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
+                        var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
+
+                        cardBody.append(cardTitle);
+                        cardBody.append(cardText);
+                        cardBody.append(cardLink);
+
+                        card.append(cardImage);
+                        card.append(cardBody);
+
+                        column.append(card);
+                        $('#card-content.row').append(column);
+
+                    });
+                    // display the data
+
+                    // alert(result);
+                }
+            })
         });
 
     });
-
-
-
-
-    // $(function () {
-
-    //         $.getJSON("https://warisan-01-37e0781fd6d2.herokuapp.com/warisan",
-    //             function (data, textStatus, jqXHR) {
-    //                 var category = "";
-    //                 console.log('GET data from url')
-    //                 // $.each(data.semuaCollection, function (index, value) {
-    //                 //     console.log(value.name);
-    //                 //     // console.log(value.kategori)
-    //                 //     // category += '<a class="nav-item nav-link" href="#">' + value.kategori + '</a>';
-    //                 // });
-    //                 $.each(data.semuaCollection, function (index, value) {
-    //                     // console.log(value.name);
-
-    //                     // console.log(index);
-    //                     console.log(value.category)
-
-    //                     var column = $('<div class="col-md-4"></div>');
-    //                     var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-    //                     var cardBody = $('<div class="card-body"></div>');
-    //                     var cardImage = $('<img src=../../express-mongodb/public/' + value.picture + ' alt="" class="card-img-top">');
-    //                     var cardBody = $('<div class="card-body"></div>');
-    //                     var cardTitle = $('<h5 class="card-title">Name: ' + value.name + '</h5>');
-    //                     var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-    //                     var cardTitle = $('<h5 class="card-title">Description: ' + value.description + '</h5>');
-    //                     var cardTitle = $('<h5 class="card-title">Category: ' + value.category + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-    //                     var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
-
-    //                     cardBody.append(cardTitle);
-    //                     cardBody.append(cardText);
-    //                     cardBody.append(cardLink);
-
-    //                     card.append(cardImage);
-    //                     card.append(cardBody);
-
-    //                     column.append(card);
-    //                     $('#card-content.row').append(column);
-
-    //                     $('.nav-link').mouseover(function (e) {
-    //                         if (value.kategori == $(this).text()) {
-    //                             $('#card-content.row').empty();
-    //                         }
-
-    //                         $('h1').html($(this).html());
-    //                         // $(selector).html() = value.kategori;
-    //                         var column = $('<div class="col-md-4"></div>');
-    //                         var card = $('<div class="card"  style="padding: 20px; margin-bottom: 10px;">');
-    //                         var cardBody = $('<div class="card-body"></div>');
-    //                         var cardImage = $('<img src=../../express-mongodb/public/' + value.gambar + ' alt="" class="card-img-top">');
-    //                         var cardBody = $('<div class="card-body"></div>');
-    //                         var cardTitle = $('<h5 class="card-title">Name: ' + value.nama + '</h5>');
-    //                         var cardText = $("<p class='card-text'>Text: Some quick example text to build on the card title and make up the bulk of the card's content.</p>");
-    //                         var cardTitle = $('<h5 class="card-title">Description: ' + value.desc + '</h5>');
-    //                         var cardTitle = $('<h5 class="card-title">Category: ' + value.kategori + '</h5>\n<h5 class="card-title">Date: ' + value.date + '</h5>');
-    //                         var cardLink = $('<a href="#" class="btn btn-primary">Go somewhere</a>');
-
-    //                         cardBody.append(cardTitle);
-    //                         cardBody.append(cardText);
-    //                         cardBody.append(cardLink);
-
-    //                         card.append(cardImage);
-    //                         card.append(cardBody);
-
-    //                         column.append(card);
-    //                         $('#card-content.row').append(column);
-
-    //                     });
-
-    //                     $('.nav-link').mouseout(function (e) {
-
-    //                     });
-    //                 });
-    //             }
-    //         );
-
-    //         // $.post("http://localhost/week10jsonajaxjquery/webservice.php",
-    //         //     function (data, textStatus, jqXHR) {
-    //         //         $.get("entity/collection.json",
-    //         //             function (data, textStatus, jqXHR) {
-    //         //                 console.log('GET data from file')
-    //         //                 console.log(data);
-    //         //             },
-    //         //         );
-    //         //     },
-    //         // );
-    //     });
-
 </script>
 </html>

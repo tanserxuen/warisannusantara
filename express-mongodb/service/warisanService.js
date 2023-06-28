@@ -10,7 +10,7 @@ async function getAllWarisanNusantara() {
     }
 }
 
-async function getWarisanNusantarByCategory(category) {
+async function getWarisanNusantaraByCategory(category) {
     try{
         var result = await WarisanNusantara.find({category: category});
         return result;
@@ -111,4 +111,5 @@ module.exports = {
     addWarisanNusantara,
     editWarisanNusantara,
     deleteWarisanNusantara, 
+    getWarisanNusantaraByCategory
 }

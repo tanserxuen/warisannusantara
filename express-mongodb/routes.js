@@ -16,6 +16,7 @@ const {
   getWarisanNusantaraById,
   addWarisanNusantara,
   editWarisanNusantara,
+  getWarisanNusantaraByCategory,
   deleteWarisanNusantara,
 } = require("./service/warisanService");
 
@@ -194,6 +195,19 @@ router.post("/warisan", upload.single("picture"), async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Error processing the request' });
+  }
+});
+
+router.get("/warisan/category/:category", async (req, res) => {
+  try {
+    var category = req.params.category;
+    // res.json({ message: category });
+    await getWarisanNusantaraByCategory(category).then((result) => {
+      res.json(result);
+    });
+  } catch (error) {
+    console.error("Error retrieving warisan nusantara: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
