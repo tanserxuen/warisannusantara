@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
+// const multer = require("multer");
+
+const multer = require('multer');
+const { Storage } = require('@google-cloud/storage');
+const { format } = require('util');
 
 const {
   authenticateUser,
@@ -24,6 +28,76 @@ const {
 
 //* To store logged in user details
 var loggedInUser = null;
+
+// Initialize the Google Cloud Storage client
+const storage = new Storage({
+  projectId: 'wt-programming',
+  keyFilename: 'wt-programming-c1b7d8b75884.json'
+});
+
+// Get the Google Cloud Storage bucket reference
+const bucketName = 'warisan';
+const bucket = storage.bucket(bucketName);
+
+//set to public for object
+bucket.acl.default.update({
+  entity: 'allUsers',
+  role: storage.acl.READER_ROLE,
+});
+
+const storageMulter = multer.memoryStorage();
+const upload = multer({
+  storage: storageMulter,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // Set the file size limit (e.g., 10MB)
+  },
+});
+
+router.post('/addwaste', upload.single('image'), async (req, res) => {
+  try {
+    const name = req.body.name;
+    const description = req.body.description;
+    const category = req.body.category;
+    const image = req.file;
+
+    // Upload the file to Google Cloud Storage
+    const gcsFileName = format('img/%s', image.originalname); // Set the desired file path and name in the bucket
+    const gcsFile = bucket.file(gcsFileName);
+
+    const stream = gcsFile.createWriteStream({
+      metadata: {
+        contentType: image.mimetype,
+        predefinedAcl: 'publicRead', // Set the ACL to public-read
+      },
+    });
+
+    stream.on('error', (err) => {
+      console.error(err);
+      return res.status(500).json({ message: 'Error uploading file to Google Cloud Storage' });
+    });
+
+    stream.on('finish', async () => {
+      const publicUrl = format('https://storage.googleapis.com/%s/%s', bucketName, gcsFileName);
+
+      // Perform other operations with the uploaded data
+      const publisher = req.body.publisher;
+      const lastUpdated = req.body.lastUpdated;
+
+      try {
+        const result = await add_waste(name, description, category, publicUrl, publisher, lastUpdated);
+        return res.json({ message: result });
+      } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Error saving data to the database' });
+      }
+    });
+
+    stream.end(image.buffer);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Error processing the request' });
+  }
+});
 
 router.post("/login", async (req, res) => {
   await authenticateUser(req.body.email, req.body.password)
@@ -109,33 +183,62 @@ router.get("/warisan/:id", async (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./public");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 // add new warisanNusantara
 router.post("/warisan", upload.single("picture"), async (req, res) => {
-  await addWarisanNusantara(
-    req.body.category,
-    req.body.name,
-    req.body.description,
-    req.body.date,
-    req.body.picture
-  )
-    .then((result) => {
-      res.json({ message: "Add Successful", status: "Success" });
-    })
-    .catch((err) => {
-      console.error("Error adding warisan nusantara: ", err);
-      res.status(500).json({ err: "Internal Server Error" });
+
+  const picture = req.file;
+
+  try{
+    // Upload the file to Google Cloud Storage
+    const gcsFileName = format('img/%s', picture.originalname); // Set the desired file path and name in the bucket
+    const gcsFile = bucket.file(gcsFileName);
+
+    const stream = gcsFile.createWriteStream({
+      metadata: {
+        contentType: picture.mimetype,
+        predefinedAcl: 'publicRead', // Set the ACL to public-read
+      },
     });
+
+    stream.on('error', (err) => {
+      console.error(err);
+      return res.status(500).json({ message: 'Error uploading file to Google Cloud Storage' });
+    });
+
+    stream.on('finish', async () => {
+      const publicUrl = format('https://storage.googleapis.com/%s/%s', bucketName, gcsFileName);
+
+      await addWarisanNusantara(
+        req.body.category,
+        req.body.name,
+        req.body.description,
+        req.body.date,
+        publicUrl
+      ).then((result) => {
+        res.json({ message: "Add Successful", status: "Success" });
+      })
+        .catch((err) => {
+          console.error("Error adding warisan nusantara: ", err);
+          res.status(500).json({ err: "Internal Server Error" });
+        });
+      // Perform other operations with the uploaded data
+    });
+    stream.end(picture.buffer);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Error processing the request' });
+  }
 });
 
 // edit warisanNusantara
