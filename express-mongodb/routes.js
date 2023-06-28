@@ -212,32 +212,61 @@ router.get("/warisan/category/:category", async (req, res) => {
 });
 
 // edit warisanNusantara
-router.put("/warisan/update/:id", async (req, res) => {
+router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => {
   console.log("abc");
+  
+  const picture = req.file;
+
   try {
-    var id = req.params.id;
-    
-    var category = req.body.category;
-    var name = req.body.name;
-    var description = req.body.description;
-    var date = req.body.date;
-    var picture = req.body.picture;
-    
-    await editWarisanNusantara(
-      id,
-      category,
-      name,
-      description,
-      date,
-      picture
-      ).then((result) => {
-        res.json({ message: "Update Successful", status: "Success" });
+    // Upload the file to Google Cloud Storage
+    const gcsFileName = format('img/%s', picture.originalname); // Set the desired file path and name in the bucket
+    const gcsFile = bucket.file(gcsFileName);
+
+    const stream = gcsFile.createWriteStream({
+      metadata: {
+        contentType: picture.mimetype,
+        predefinedAcl: 'publicRead', // Set the ACL to public-read
+      },
     });
-  } catch (error) {
-    console.error("Error editing warisan nusantara: ", error);
-    res.status(500).json({ error: "Internal Server Error" });
+
+    stream.on('error', (err) => {
+      console.error(err);
+      return res.status(500).json({ message: 'Error uploading file to Google Cloud Storage' });
+    });
+
+    stream.on('finish', async () => {
+      const publicUrl = format('https://storage.googleapis.com/%s/%s', bucketName, gcsFileName);
+      try{
+        var id = req.params.id;
+
+        var category = req.body.category;
+        var name = req.body.name;
+        var description = req.body.description;
+        var date = req.body.date;
+        var picture = publicUrl;
+
+        await editWarisanNusantara(
+          id,
+          category,
+          name,
+          description,
+          date,
+          picture
+        ).then((result) => {
+          res.json({ message: "Update Successful", status: "Success" });
+        });
+      } catch (error) {
+        console.error("Error editing warisan nusantara: ", error);
+        res.status(500).json({ error: "Internal Server Error" });
+      }
+    });
+    stream.end(picture.buffer);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Error processing the request' });
   }
 });
+
 
 // delete warisanNusantara
 router.delete("/warisan/delete/:id", async (req, res) => {
