@@ -25,20 +25,20 @@ const {
 var loggedInUser = null;
 
 // Initialize the Google Cloud Storage client
-const storage = new Storage({
-  projectId: 'wt-programming',
-  keyFilename: 'wt-programming-c1b7d8b75884.json'
-});
+// const storage = new Storage({
+//   projectId: 'wt-programming',
+//   keyFilename: 'wt-programming-c1b7d8b75884.json'
+// });
 
 // Get the Google Cloud Storage bucket reference
 const bucketName = 'warisan';
-const bucket = storage.bucket(bucketName);
+// const bucket = storage.bucket(bucketName);
 
 //set to public for object
-bucket.acl.default.update({
-  entity: 'allUsers',
-  role: storage.acl.READER_ROLE,
-});
+// bucket.acl.default.update({
+//   entity: 'allUsers',
+//   role: storage.acl.READER_ROLE,
+// });
 
 const storageMulter = multer.memoryStorage();
 const upload = multer({
@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
 router.post("/register", async (req, res) => {
   await register(req.body.name, req.body.email, req.body.password)
     .then((result) => {
-      res.json({ message: "Register Successful"});
+      res.json({ message: "Register Successful" });
     })
     .catch((err) => {
       res.json({ err: "Server Error" });
@@ -86,7 +86,7 @@ router.get("/user/:id", async (req, res) => {
 });
 
 router.put("/profile/update", async (req, res) => {
-  try{
+  try {
     console.log(req.body.name, req.body.email, req.body.password);
 
     await editProfile(
@@ -99,10 +99,10 @@ router.put("/profile/update", async (req, res) => {
         console.log("result")
         console.log(result)
         loggedInUser = result;
-        res.json({ result , message: "Update Successful", status: "Success" });
+        res.json({ result, message: "Update Successful", status: "Success" });
       })
       .catch((err) => res.json({ err: "Server Error" }));
-  }catch(err){
+  } catch (err) {
     console.log(err)
   }
 });
@@ -137,7 +137,7 @@ router.get("/warisan/:id", async (req, res) => {
 router.post("/warisan", upload.single("picture"), async (req, res) => {
 
   const picture = req.file;
-  try{
+  try {
     // Upload the file to Google Cloud Storage
     const gcsFileName = format('img/%s', picture.originalname); // Set the desired file path and name in the bucket
     const gcsFile = bucket.file(gcsFileName);
@@ -193,7 +193,7 @@ router.get("/warisan/category/:category", async (req, res) => {
 });
 
 // edit warisanNusantara
-router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => {  
+router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => {
   const picture = req.file;
 
   try {
@@ -215,7 +215,7 @@ router.put("/warisan/update/:id", upload.single("picture"), async (req, res) => 
 
     stream.on('finish', async () => {
       const publicUrl = format('https://storage.googleapis.com/%s/%s', bucketName, gcsFileName);
-      try{
+      try {
         var id = req.params.id;
 
         var category = req.body.category;
